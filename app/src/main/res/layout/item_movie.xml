@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageViewMovie"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@color/teal_200" />
+
+        <TextView
+            android:id="@+id/textViewTitleMovie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/imageViewMovie"
+            android:text="Talking with Ted"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewTitleReleaseDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewTitleMovie"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@id/imageViewMovie"
+            android:layout_alignParentBottom="true"
+            android:text="21 April 2020"
+            android:textSize="18sp"
+            android:textStyle="normal" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
