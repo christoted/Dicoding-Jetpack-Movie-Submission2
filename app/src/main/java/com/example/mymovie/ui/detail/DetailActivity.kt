@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.mymovie.R
 import com.example.mymovie.databinding.ActivityDetailBinding
-import com.example.mymovie.data.entity.Movie
-import com.example.mymovie.data.entity.TvShow
+import com.example.mymovie.data.local.entity.Movie
+import com.example.mymovie.data.local.entity.TvShow
 import com.example.mymovie.viewmodel.ViewModelFactory
 
 class DetailActivity : AppCompatActivity() {
@@ -56,8 +56,8 @@ class DetailActivity : AppCompatActivity() {
                     val selectedMovie = it
 
                     Glide.with(this)
-                        .load(selectedMovie.Poster)
-                        .into(binding.imageView)
+                     //   .load(selectedMovie.Poster)
+                 //       .into(binding.imageView)
 //
 //                    binding.movieTitleDetail.text = selectedMovie.Title
 //                    binding.movieReleaseDateDetail.text = selectedMovie.Year
@@ -81,11 +81,25 @@ class DetailActivity : AppCompatActivity() {
                     binding.progressBar.visibility = View.GONE
                     binding.layoutDetail.visibility = View.VISIBLE
 
-                    val selectedTVShow = it
+                    val selectedTVShow = it.data
 
-                    Glide.with(this)
-                        .load(selectedTVShow.Poster)
-                        .into(binding.imageView)
+                    if (selectedTVShow != null) {
+                        for ( i in selectedTVShow) {
+                            if ( i.imdbID == tvShowImbdID) {
+                                Glide.with(this)
+                                    .load(i.Poster)
+                                    .into(binding.imageView)
+
+
+                            }
+                        }
+                    }
+
+//                    Glide.with(this)
+//                        .load(selectedTVShow.Poster)
+//                        .into(binding.imageView)
+
+
 //                    binding.movieTitleDetail.text = selectedTVShow.Title
 //                    binding.movieReleaseDateDetail.text = selectedTVShow.Year
 //                    binding.movieAuthorDetail.text = selectedTVShow.imdbID

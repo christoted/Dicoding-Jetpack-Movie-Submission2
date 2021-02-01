@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mymovie.databinding.ItemTvShowBinding
-import com.example.mymovie.data.entity.TvShow
+import com.example.mymovie.data.local.entity.TvShow
 
 class TVShowAdapter(
     val listTVShow : ArrayList<TvShow>,

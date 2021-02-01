@@ -2,14 +2,13 @@ package com.example.mymovie.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.mymovie.data.entity.Movie
-import com.example.mymovie.data.entity.TvShow
-import com.example.mymovie.data.remote.FilmDataSource
+import com.example.mymovie.data.local.entity.Movie
+import com.example.mymovie.data.local.entity.TvShow
 import com.example.mymovie.data.remote.RemoteDataSource
 import com.example.mymovie.data.remote.response.MovieResponse
 import com.example.mymovie.data.remote.response.TVShowResponse
 
-class FakeFilmRepository (private val remoteDataSource: RemoteDataSource) : FilmDataSource{
+class FakeFilmRepository (private val remoteDataSource: RemoteDataSource) : FilmDataSource {
 
     override fun getAllMovie(): LiveData<List<Movie>> {
 

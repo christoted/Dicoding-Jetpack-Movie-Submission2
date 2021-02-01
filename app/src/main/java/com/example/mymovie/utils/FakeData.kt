@@ -1,8 +1,8 @@
 package com.example.mymovie.utils
 
 import com.example.mymovie.R
-import com.example.mymovie.data.entity.Movie
-import com.example.mymovie.data.entity.TvShow
+import com.example.mymovie.data.local.entity.Movie
+import com.example.mymovie.data.local.entity.TvShow
 import com.example.mymovie.data.remote.response.MovieResponse
 import com.example.mymovie.data.remote.response.TVShowResponse
 

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mymovie.databinding.FragmentMovieBinding
 import com.example.mymovie.databinding.ItemMovieBinding
-import com.example.mymovie.data.entity.Movie
+import com.example.mymovie.data.local.entity.Movie
 
 class MovieAdapter(
     var listMovie : ArrayList<Movie>,

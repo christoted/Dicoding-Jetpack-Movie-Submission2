@@ -10,8 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.mymovie.R
-import com.example.mymovie.data.entity.Movie
-import com.example.mymovie.data.entity.TvShow
+import com.example.mymovie.data.local.entity.Movie
+import com.example.mymovie.data.local.entity.TvShow
 import com.example.mymovie.databinding.ActivityDetailCollapseBinding
 import com.example.mymovie.databinding.ContentScrollingBinding
 import com.example.mymovie.viewmodel.ViewModelFactory
@@ -72,17 +72,26 @@ class DetailCollapseActivity : AppCompatActivity() {
                     activityDetailCollapseBinding.progressBar.visibility = View.GONE
                     activityDetailCollapseBinding.appBar.visibility = View.VISIBLE
                     activityDetailCollapseBinding.content.scrollingContent.visibility = View.VISIBLE
-                    val selectedMovie = it
+                    val selectedMovie = it.data
 
-                    Glide.with(this)
-                        .load(selectedMovie.Poster)
-                        .into(activityDetailCollapseBinding.imageView)
+                    if ( selectedMovie != null) {
+                        for ( i in selectedMovie) {
+                            if ( i.imdbID == movieImbdID) {
+                                Glide.with(this)
+                                    .load(i.Poster)
+                                    .into(activityDetailCollapseBinding.imageView)
 
-                    activityDetailCollapseBinding.appBar.background
+                                activityDetailCollapseBinding.appBar.background
 
-                    contentScrollingBinding.movieTitleDetail.text = selectedMovie.Title
-                    contentScrollingBinding.movieReleaseDateDetail.text = selectedMovie.Year
-                    contentScrollingBinding.movieAuthorDetail.text = selectedMovie.imdbID
+                                contentScrollingBinding.movieTitleDetail.text = i.Title
+                                contentScrollingBinding.movieReleaseDateDetail.text = i.Year
+                                contentScrollingBinding.movieAuthorDetail.text = i.imdbID
+                                break
+                            }
+                        }
+                    }
+
+
                 })
             } else if (tvShow != null) {
 
@@ -96,15 +105,25 @@ class DetailCollapseActivity : AppCompatActivity() {
                     activityDetailCollapseBinding.progressBar.visibility = View.GONE
                     activityDetailCollapseBinding.layoutDetailCollapse.visibility = View.VISIBLE
 
-                    val selectedTVShow = it
+                    val selectedTVShow = it.data
 
-                    Glide.with(this)
-                        .load(selectedTVShow.Poster)
-                        .into(activityDetailCollapseBinding.imageView)
+                    if ( selectedTVShow != null) {
+                        for ( i in selectedTVShow) {
+                            if ( i.imdbID == tvShowImbdID ) {
+                                Glide.with(this)
+                                    .load(i.Poster)
+                                    .into(activityDetailCollapseBinding.imageView)
 
-                    contentScrollingBinding.movieTitleDetail.text = selectedTVShow.Title
-                    contentScrollingBinding.movieReleaseDateDetail.text = selectedTVShow.Year
-                    contentScrollingBinding.movieAuthorDetail.text = selectedTVShow.imdbID
+                                contentScrollingBinding.movieTitleDetail.text = i.Title
+                                contentScrollingBinding.movieReleaseDateDetail.text = i.Year
+                                contentScrollingBinding.movieAuthorDetail.text = i.imdbID
+                                break
+                            }
+                        }
+
+                    }
+
+
                 })
             }
 

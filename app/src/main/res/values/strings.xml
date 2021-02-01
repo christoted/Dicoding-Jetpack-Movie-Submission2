@@ -4,6 +4,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="movie">Movie</string>
     <string name="tvshow">TV Show</string>
+    <string name="movieFav">Movie</string>
+    <string name="tvshowFav">TV Show</string>
     <string name="date">21 April 2020</string>
     <string name="title_activity_detail_collapse">Detail</string>
     <string name="large_text">

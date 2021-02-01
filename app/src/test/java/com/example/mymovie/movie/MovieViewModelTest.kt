@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.mymovie.data.FilmRepository
-import com.example.mymovie.data.entity.Movie
-import com.example.mymovie.data.entity.TvShow
+import com.example.mymovie.data.local.entity.Movie
+import com.example.mymovie.data.local.entity.TvShow
 import com.example.mymovie.ui.movie.MovieViewModel
 import com.example.mymovie.utils.FakeData
 import com.nhaarman.mockitokotlin2.verify
