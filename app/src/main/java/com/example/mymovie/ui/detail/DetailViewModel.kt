@@ -9,9 +9,9 @@ import com.example.mymovie.vo.Resource
 
 class DetailViewModel(private val filmRepository: FilmRepository) : ViewModel() {
 
-    private lateinit var imbdID : String
+    private lateinit var imbdID: String
 
-    fun setSelectedMovie(imbdID : String){
+    fun setSelectedMovie(imbdID: String) {
         this.imbdID = imbdID
     }
 
@@ -19,15 +19,46 @@ class DetailViewModel(private val filmRepository: FilmRepository) : ViewModel() 
         this.imbdID = imbdID
     }
 
- //   fun getMovieSelected() : LiveData<Movie> = filmRepository.getSelectedMovie(imbdID)
-
-    fun getMovieSelected() : LiveData<Resource<List<Movie>>> {
-
-        return filmRepository.getAllMovie()
+    fun setBookMarkedMovie(movie: Movie) {
+        val newState = !movie.bookmarked
+        filmRepository.setBookmarkedMovie(movie, newState)
     }
 
-    fun getTVShowSelected(): LiveData<Resource<List<TvShow>>> {
-        return filmRepository.getAllTVShow()
+    fun setBookMarkedTVShow(tvShow: TvShow) {
+        val newState = !tvShow.bookmarked
+        filmRepository.setBookmarkedTVShow(tvShow, newState)
+    }
+
+    fun setBookMarkedMovie() {
+        val movieResource = filmRepository.getSelectedMovie(imbdID).value
+        if (movieResource != null) {
+            val movie = movieResource.data
+
+            if (movie != null) {
+                val newState = !movie.bookmarked
+                filmRepository.setBookmarkedMovie(movie, newState)
+            }
+        }
+    }
+
+    fun setBookMarkedTVShow() {
+        val tVShowResource =  filmRepository.getSelectedTVShow(imbdID).value
+        if (tVShowResource != null) {
+            val tvShow = tVShowResource.data
+            if ( tvShow != null) {
+                val newState = !tvShow.bookmarked
+                filmRepository.setBookmarkedTVShow(tvShow, newState)
+            }
+        }
+    }
+
+    fun getMovieSelected(): LiveData<Resource<Movie>> {
+
+        return filmRepository.getSelectedMovie(imbdID)
+    }
+
+    fun getTVShowSelected(): LiveData<Resource<TvShow>> {
+        return filmRepository.getSelectedTVShow(imbdID)
     }
 
 }

@@ -75,31 +75,6 @@ class JsonHelper(private val context: Context) {
         return listTVShow
     }
 
-    fun selectedTVShow(): List<TVShowResponse> {
-        val listTVShow : ArrayList<TVShowResponse> = ArrayList()
 
-        try {
-            val responseObject = JSONObject(parsingFileToString("tvshow.json").toString())
-            val listArray = responseObject.getJSONArray("Search")
-
-            for ( i in 0 until listArray.length()) {
-                val tvShow = listArray.getJSONObject(i)
-
-                val imdbID = tvShow.getString("imdbID")
-                val Poster = tvShow.getString("Poster")
-                val Title = tvShow.getString("Title")
-                val Type = tvShow.getString("Type")
-                val Year = tvShow.getString("Year")
-
-                val tvShowResponse = TVShowResponse(Poster, Title, Type, Year, imdbID)
-                listTVShow.add(tvShowResponse)
-            }
-
-        } catch (e : IOException) {
-            e.printStackTrace()
-        }
-
-        return listTVShow
-    }
 
 }

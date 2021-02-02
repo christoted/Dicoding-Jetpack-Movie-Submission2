@@ -1,10 +1,13 @@
 package com.example.mymovie.ui.movie
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.mymovie.R
 import com.example.mymovie.databinding.FragmentMovieBinding
 import com.example.mymovie.databinding.ItemMovieBinding
 import com.example.mymovie.data.local.entity.Movie
@@ -45,6 +48,7 @@ class MovieAdapter(
                 textViewTitleReleaseDate.text = movie.Year
                 Glide.with(itemView.context)
                         .load(movie.Poster)
+                        .placeholder(R.drawable.ic_loading)
                         .into(imageViewMovie)
             }
         }

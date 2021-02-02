@@ -10,11 +10,15 @@ interface FilmDataSource {
 
     fun getAllTVShow() : LiveData<Resource<List<TvShow>>>
 
- //   fun getSelectedMovie(imdbID : String) : LiveData<Resource<Movie>>
+    fun getSelectedMovie(imdbID : String) : LiveData<Resource<Movie>>
 
- //   fun getSelectedTVShow(imdbID: String) : LiveData<Resource<TvShow>>
+    fun getSelectedTVShow(imdbID: String) : LiveData<Resource<TvShow>>
 
     fun setBookmarkedMovie(movie: Movie, newState: Boolean)
 
     fun setBookmarkedTVShow(tvShow: TvShow, newState: Boolean)
+
+    fun getBookmarkedTVShow(): LiveData<List<TvShow>>
+
+    fun getBookmarkedMovie(): LiveData<List<Movie>>
 }

@@ -1,9 +1,12 @@
 package com.example.mymovie.ui.tvshow
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.mymovie.R
 import com.example.mymovie.databinding.ItemTvShowBinding
 import com.example.mymovie.data.local.entity.TvShow
 
@@ -40,6 +43,7 @@ class TVShowAdapter(
                 textViewTitleReleaseDateTvShow.text = tvShow.Year
                 Glide.with(itemView.context)
                         .load(tvShow.Poster)
+                        .placeholder(R.drawable.ic_loading)
                         .into(binding.imageViewTvShow)
             }
         }
