@@ -45,16 +45,17 @@ class MovieFavFragment : Fragment(), MovieItemListener {
 
         listSavedMovie = ArrayList()
 
-        val movieAdapter = MovieAdapter(listSavedMovie, this@MovieFavFragment)
+        val movieAdapter = MovieAdapter(this@MovieFavFragment)
 
         if ( activity != null) {
             val viewModelFactory = ViewModelFactory.getInstance(requireActivity())
             viewModel = ViewModelProvider(this, viewModelFactory)[MovieFavViewModel::class.java]
             Log.d(TAG, "onViewCreated: ${listSavedMovie.size}")
             viewModel.getMovieSaved().observe(viewLifecycleOwner, Observer {
-                listSavedMovie.addAll(it)
+              //  listSavedMovie.addAll(it)
                 Log.d(TAG, "onViewCreated: ${listSavedMovie.size}")
-                movieAdapter.notifyDataSetChanged()
+                movieAdapter.submitList(it)
+            //    movieAdapter.notifyDataSetChanged()
             })
         }
 

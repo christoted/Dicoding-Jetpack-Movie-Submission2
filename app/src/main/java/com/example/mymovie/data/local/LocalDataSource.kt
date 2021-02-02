@@ -1,6 +1,7 @@
 package com.example.mymovie.data.local
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import com.example.mymovie.data.local.entity.Movie
 import com.example.mymovie.data.local.entity.TvShow
 import com.example.mymovie.data.local.room.CatalogueDao
@@ -13,7 +14,7 @@ class LocalDataSource private constructor(private val catalogueDao: CatalogueDao
     }
 
     // Movie
-    fun getAllMovies(): LiveData<List<Movie>> = catalogueDao.getAllMovies()
+    fun getAllMovies(): DataSource.Factory<Int, Movie> = catalogueDao.getAllMovies()
 
     fun insertMovie(listMovie: List<Movie>) = catalogueDao.insertMovie(listMovie)
 
@@ -22,7 +23,7 @@ class LocalDataSource private constructor(private val catalogueDao: CatalogueDao
         catalogueDao.updateBookmarkedMovie(movie)
     }
 
-    fun getBookmarkedMovie(): LiveData<List<Movie>> = catalogueDao.getBookmarkedMovie()
+    fun getBookmarkedMovie(): DataSource.Factory<Int, Movie> = catalogueDao.getBookmarkedMovie()
 
     fun getMovieByImbdID(imbdid: String): LiveData<Movie> = catalogueDao.getMovieByImbdID(imbdid)
 
@@ -31,7 +32,7 @@ class LocalDataSource private constructor(private val catalogueDao: CatalogueDao
     }
 
     // TV Show
-    fun getAllTVShow(): LiveData<List<TvShow>> = catalogueDao.getAllTVShow()
+    fun getAllTVShow(): DataSource.Factory<Int, TvShow> = catalogueDao.getAllTVShow()
 
     fun insertTVShow(listTvShow: List<TvShow>) = catalogueDao.insertTVShow(listTvShow)
 
@@ -40,7 +41,7 @@ class LocalDataSource private constructor(private val catalogueDao: CatalogueDao
         catalogueDao.updateBookmarkedTVShow(tvShow)
     }
 
-    fun getBookmarkedTVShow(): LiveData<List<TvShow>> = catalogueDao.getBookmarkedTVshow()
+    fun getBookmarkedTVShow(): DataSource.Factory<Int, TvShow> = catalogueDao.getBookmarkedTVshow()
 
     fun getTVShowByImbdID(imbdid: String): LiveData<TvShow> = catalogueDao.getTVShowByImbdID(imbdid)
 

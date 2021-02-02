@@ -46,7 +46,7 @@ class TvShowFragment : Fragment(), TVShowListener {
 
             val viewModelFactory = ViewModelFactory.getInstance(requireActivity())
             viewModel = ViewModelProvider(this, viewModelFactory)[TvShowViewModel::class.java]
-            tvShowAdapter = TVShowAdapter(listTVShow, this)
+            tvShowAdapter = TVShowAdapter(this)
             viewModel.getTVShow().observe(viewLifecycleOwner, Observer { tvShows ->
 
                 when (tvShows.status) {
@@ -54,9 +54,9 @@ class TvShowFragment : Fragment(), TVShowListener {
 
                         binding.progressBar.visibility = View.GONE
                         binding.recyclerViewTVShow.visibility = View.VISIBLE
-                        tvShows.data?.let { listTVShow.addAll(it) }
-                        tvShowAdapter.notifyDataSetChanged()
-
+                        tvShows.data?.let {
+                            tvShowAdapter.submitList(it)
+                        }
                     }
 
                     Status.LOADING -> {
@@ -65,7 +65,8 @@ class TvShowFragment : Fragment(), TVShowListener {
 
                     Status.ERROR -> {
                         binding.progressBar.visibility = View.GONE
-                        Toast.makeText(requireActivity(), "Error Occurred", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireActivity(), "Error Occurred", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
 
@@ -86,8 +87,7 @@ class TvShowFragment : Fragment(), TVShowListener {
     }
 
     override fun onTVShowClickedListener(Position: Int) {
-        val tvShow = listTVShow[Position]
-        //   val intent = Intent(context, DetailActivity::class.java)
+        val tvShow = tvShowAdapter.currentList?.get(Position)
         val intent = Intent(context, DetailCollapseActivity::class.java)
         intent.putExtra(DetailActivity.RECEIVE_INTENT_TVSHOWS, tvShow)
         startActivity(intent)

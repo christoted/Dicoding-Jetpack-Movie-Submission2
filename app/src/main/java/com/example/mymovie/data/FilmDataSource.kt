@@ -1,14 +1,17 @@
 package com.example.mymovie.data
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
 import com.example.mymovie.data.local.entity.Movie
 import com.example.mymovie.data.local.entity.TvShow
 import com.example.mymovie.vo.Resource
 
 interface FilmDataSource {
-    fun getAllMovie() : LiveData<Resource<List<Movie>>>
+    //Pagination
+    fun getAllMovie() : LiveData<Resource<PagedList<Movie>>>
 
-    fun getAllTVShow() : LiveData<Resource<List<TvShow>>>
+    //Pagination
+    fun getAllTVShow() : LiveData<Resource<PagedList<TvShow>>>
 
     fun getSelectedMovie(imdbID : String) : LiveData<Resource<Movie>>
 
@@ -18,7 +21,8 @@ interface FilmDataSource {
 
     fun setBookmarkedTVShow(tvShow: TvShow, newState: Boolean)
 
-    fun getBookmarkedTVShow(): LiveData<List<TvShow>>
-
-    fun getBookmarkedMovie(): LiveData<List<Movie>>
+    //Pagination
+    fun getBookmarkedTVShow(): LiveData<PagedList<TvShow>>
+    //Pagination
+    fun getBookmarkedMovie(): LiveData<PagedList<Movie>>
 }

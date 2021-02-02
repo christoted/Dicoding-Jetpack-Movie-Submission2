@@ -46,7 +46,7 @@ class MovieFragment : Fragment(), MovieItemListener {
 
             viewModel = ViewModelProvider(this, viewModelFactory)[MovieViewModel::class.java]
 
-            movieAdapter = MovieAdapter(listMovie, this)
+            movieAdapter = MovieAdapter(this)
 
             viewModel.getMovie().observe(viewLifecycleOwner, Observer { movies ->
 
@@ -55,9 +55,9 @@ class MovieFragment : Fragment(), MovieItemListener {
                         binding.progressBar.visibility = View.GONE
                         binding.recyclerViewMovie.visibility = View.VISIBLE
                         movies.data?.let {
-                            listMovie.addAll(it)
+                            movieAdapter.submitList(it)
                         }
-                        movieAdapter.notifyDataSetChanged()
+
                     }
                     Status.LOADING -> {
                         binding.progressBar.visibility = View.VISIBLE
@@ -81,9 +81,8 @@ class MovieFragment : Fragment(), MovieItemListener {
     }
 
     override fun onMovieItemClicked(Position: Int) {
-        // val intent = Intent(context, DetailActivity::class.java)
         val intent = Intent(context, DetailCollapseActivity::class.java)
-        val movie = listMovie[Position]
+        val movie = movieAdapter.currentList?.get(Position)
         intent.putExtra(DetailActivity.RECEIVE_INTENT_MOVIE, movie)
         startActivity(intent)
     }

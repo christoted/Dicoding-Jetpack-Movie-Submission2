@@ -39,15 +39,15 @@ class TVShowFavFragment : Fragment(), TVShowListener {
         super.onViewCreated(view, savedInstanceState)
         listSavedTVShow = ArrayList()
 
-        tvShowAdapter = TVShowAdapter(listSavedTVShow, this@TVShowFavFragment)
+        tvShowAdapter = TVShowAdapter(this@TVShowFavFragment)
 
         if ( activity != null) {
             val factory = ViewModelFactory.getInstance(requireActivity())
             viewModel = ViewModelProvider(this, factory)[TVShowFavViewModel::class.java]
 
             viewModel.getSavedTVShow().observe(viewLifecycleOwner, Observer {
-                listSavedTVShow.addAll(it)
-                tvShowAdapter.notifyDataSetChanged()
+              //  listSavedTVShow.addAll(it)
+                tvShowAdapter.submitList(it)
             })
         }
 
