@@ -9,8 +9,7 @@ import com.example.mymovie.data.local.entity.Movie
 import com.example.mymovie.data.local.entity.TvShow
 import com.example.mymovie.data.remote.ApiResponse
 import com.example.mymovie.data.remote.RemoteDataSource
-import com.example.mymovie.data.remote.response.MovieResponse
-import com.example.mymovie.data.remote.response.TVShowResponse
+import com.example.mymovie.data.remote.response.*
 import com.example.mymovie.vo.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -31,7 +30,7 @@ class FilmRepository private constructor(private val remoteDataSource: RemoteDat
     }
 
     override fun getAllMovie(): LiveData<Resource<PagedList<Movie>>> {
-        return object : NetworkBoundResource<PagedList<Movie>, List<MovieResponse>>() {
+        return object : NetworkBoundResource<PagedList<Movie>, MovieServiceResponse>() {
             override fun loadFromDB(): LiveData<PagedList<Movie>> {
 
                 val config = PagedList.Config.Builder()
@@ -47,16 +46,21 @@ class FilmRepository private constructor(private val remoteDataSource: RemoteDat
                 return data.isEmpty()
             }
 
-            override fun createCall(): LiveData<ApiResponse<List<MovieResponse>>> {
+            override fun createCall(): LiveData<ApiResponse<MovieServiceResponse>> {
                return  remoteDataSource.getAllMovie()
             }
 
-            override fun saveCallForResult(body: List<MovieResponse>) {
+            override fun saveCallForResult(body: MovieServiceResponse) {
                 val movieList = ArrayList<Movie>()
-                for ( movie in body) {
-                    val movie = Movie(movie.Poster, movie.Title, movie.Type, movie.Year, movie.imdbID, false)
-                    movieList.add(movie)
+
+                val movies = body.Search
+
+                for ( movie in movies) {
+                    val movie = Movie(movie.Poster, movie.Title, movie.Type, movie.Year, movie.imdbID, false )
+                       movieList.add(movie)
                 }
+
+
                 localDataSource.insertMovie(movieList)
             }
 
@@ -65,7 +69,7 @@ class FilmRepository private constructor(private val remoteDataSource: RemoteDat
 
 
     override fun getAllTVShow(): LiveData<Resource<PagedList<TvShow>>> {
-        return object : NetworkBoundResource<PagedList<TvShow>, List<TVShowResponse>>() {
+        return object : NetworkBoundResource<PagedList<TvShow>, TVShowServiceResponse>() {
             override fun loadFromDB(): LiveData<PagedList<TvShow>> {
 
                 val config = PagedList.Config.Builder()
@@ -81,14 +85,16 @@ class FilmRepository private constructor(private val remoteDataSource: RemoteDat
                 return data.isEmpty()
             }
 
-            override fun createCall(): LiveData<ApiResponse<List<TVShowResponse>>> {
+            override fun createCall(): LiveData<ApiResponse<TVShowServiceResponse>> {
                 return remoteDataSource.getAllTVShow()
             }
 
-            override fun saveCallForResult(body: List<TVShowResponse>) {
+            override fun saveCallForResult(body: TVShowServiceResponse) {
                 val listTVShow = ArrayList<TvShow>()
 
-                for ( tvShow in body) {
+                val tvShows = body.TVShowSearch
+
+                for ( tvShow in tvShows) {
                     val tvShow = TvShow(tvShow.Poster, tvShow.Title, tvShow.Type, tvShow.Year, tvShow.imdbID, false)
                     listTVShow.add(tvShow)
                 }
@@ -100,7 +106,7 @@ class FilmRepository private constructor(private val remoteDataSource: RemoteDat
     }
 
     override fun getSelectedMovie(imdbID: String): LiveData<Resource<Movie>> {
-        return object : NetworkBoundResource<Movie, List<MovieResponse>>() {
+        return object : NetworkBoundResource<Movie, MovieServiceResponse>() {
             override fun loadFromDB(): LiveData<Movie> {
                 return localDataSource.getMovieByImbdID(imdbID)
             }
@@ -109,14 +115,16 @@ class FilmRepository private constructor(private val remoteDataSource: RemoteDat
                 return data.imdbID.isEmpty()
             }
 
-            override fun createCall(): LiveData<ApiResponse<List<MovieResponse>>> {
+            override fun createCall(): LiveData<ApiResponse<MovieServiceResponse>> {
                 return remoteDataSource.getAllMovie()
             }
 
-            override fun saveCallForResult(body: List<MovieResponse>) {
+            override fun saveCallForResult(body: MovieServiceResponse) {
                 val listMovie = ArrayList<Movie>()
 
-                for ( movie in body) {
+                val movies = body.Search
+
+                for ( movie in movies) {
                     val movie = Movie(movie.Poster, movie.Title, movie.Type, movie.Year, movie.imdbID, false)
                     listMovie.add(movie)
                 }
@@ -128,7 +136,7 @@ class FilmRepository private constructor(private val remoteDataSource: RemoteDat
     }
 
     override fun getSelectedTVShow(imdbID: String): LiveData<Resource<TvShow>> {
-        return object : NetworkBoundResource<TvShow, List<TVShowResponse>>() {
+        return object : NetworkBoundResource<TvShow, TVShowServiceResponse>() {
             override fun loadFromDB(): LiveData<TvShow> {
                 return localDataSource.getTVShowByImbdID(imdbID)
             }
@@ -137,17 +145,19 @@ class FilmRepository private constructor(private val remoteDataSource: RemoteDat
                 return data.imdbID.isEmpty()
             }
 
-            override fun createCall(): LiveData<ApiResponse<List<TVShowResponse>>> {
+            override fun createCall(): LiveData<ApiResponse<TVShowServiceResponse>> {
                 return remoteDataSource.getAllTVShow()
             }
 
-            override fun saveCallForResult(body: List<TVShowResponse>) {
+            override fun saveCallForResult(body: TVShowServiceResponse) {
                 val listTVShow = ArrayList<TvShow>()
+                val tvShows = body.TVShowSearch
 
-                for ( tvShow in body) {
+                for ( tvShow in tvShows) {
                     val tvShow = TvShow(tvShow.Poster, tvShow.Title, tvShow.Type, tvShow.Year, tvShow.imdbID, false)
                     listTVShow.add(tvShow)
                 }
+
                 localDataSource.insertTVShow(listTVShow)
             }
 

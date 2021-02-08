@@ -14,7 +14,7 @@ object Injection {
         val database = CatalogueDatabase.getInstance(context)
 
         val localDataSource = LocalDataSource.getInstance(database.catalogueDao())
-        val remoteDataSource = RemoteDataSource.getInstance(JsonHelper(context))
+        val remoteDataSource = RemoteDataSource()
         return FilmRepository.getInstance(remoteDataSource, localDataSource)
     }
 }
