@@ -1,43 +1,39 @@
 package com.example.mymovie.data.remote
 
 import android.os.Handler
-import com.example.mymovie.data.remote.response.MovieResponse
-import com.example.mymovie.data.remote.response.TVShowResponse
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.example.mymovie.data.remote.api.ApiConfig
+import com.example.mymovie.data.remote.response.*
 import com.example.mymovie.utils.EspressoIdlingResource
-import com.example.mymovie.utils.JsonHelper
+import kotlinx.coroutines.*
 
-class RemoteDataSource private constructor(private val jsonHelper: JsonHelper){
+class RemoteDataSource {
 
-    private val handler = Handler()
+    fun getAllMovie() : LiveData<ApiResponse<MovieServiceResponse>> = runBlocking {
+        val resultMovie = MutableLiveData<ApiResponse<MovieServiceResponse>>()
+        val movies = async { getMovies() }
+        val result = movies.await()
+        resultMovie.postValue(ApiResponse.success(result))
 
-    companion object {
-
-        private const val SERVICE_LATENCY_IN_MILIS: Long = 1000
-
-        @Volatile
-        private var instance: RemoteDataSource? = null
-
-        fun getInstance(helper: JsonHelper) : RemoteDataSource =
-            instance ?: synchronized(this) {
-                instance ?: RemoteDataSource(helper)
-            }
+        return@runBlocking resultMovie
     }
 
-    fun getAllMovie(callback : LoadMovieCallback) {
-        EspressoIdlingResource.increment()
-        handler.postDelayed({callback.onAllMovieReceived(jsonHelper.loadMovie())
-        EspressoIdlingResource.decrement()
-        }, SERVICE_LATENCY_IN_MILIS)
+     private suspend fun getMovies() : MovieServiceResponse{
+         return ApiConfig.getApiService().getMovie()
     }
 
-  //  fun getAllMovie() : List<MovieResponse> = jsonHelper.loadMovie()
-
-  //  fun getAllTVShow() : List<TVShowResponse> = jsonHelper.loadTVShow()
-
-    fun getAllTVShow(callback : LoadTVShowCallback) {
+    fun getAllTVShow(): LiveData<ApiResponse<TVShowServiceResponse>> {
         EspressoIdlingResource.increment()
-        handler.postDelayed({callback.onAllTVShowReceived(jsonHelper.loadTVShow())
-                            EspressoIdlingResource.decrement()}, SERVICE_LATENCY_IN_MILIS)
+        val resultTVShow = MutableLiveData<ApiResponse<TVShowServiceResponse>>()
+
+        GlobalScope.launch(Dispatchers.IO) {
+            val tvShowService = ApiConfig.getApiService().getTVShow()
+            EspressoIdlingResource.decrement()
+            resultTVShow.postValue(ApiResponse.success(tvShowService))
+        }
+
+        return resultTVShow
     }
 
 

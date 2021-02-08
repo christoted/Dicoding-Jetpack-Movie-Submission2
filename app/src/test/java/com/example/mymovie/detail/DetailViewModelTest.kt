@@ -4,10 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.mymovie.data.FilmRepository
-import com.example.mymovie.data.entity.Movie
-import com.example.mymovie.data.entity.TvShow
+import com.example.mymovie.data.local.entity.Movie
+import com.example.mymovie.data.local.entity.TvShow
 import com.example.mymovie.ui.detail.DetailViewModel
 import com.example.mymovie.utils.FakeData
+import com.example.mymovie.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
 
@@ -26,7 +27,7 @@ class DetailViewModelTest {
     private lateinit var viewModel: DetailViewModel
 
     private val dummyMovie = FakeData.generateFakeMovies()[0]
-    private val dummyTVShow = FakeData.generateFakeTVShows()[1]
+    private val dummyTVShow = FakeData.generateFakeTVShows()[0]
 
     private val dummyMovieImbdID = dummyMovie.imdbID
     private val dummyTVShowImbdID = dummyTVShow.imdbID
@@ -38,10 +39,10 @@ class DetailViewModelTest {
     private lateinit var filmRepository: FilmRepository
 
     @Mock
-    private lateinit var movieObserver: Observer<Movie>
+    private lateinit var movieObserver: Observer<Resource<Movie>>
 
     @Mock
-    private lateinit var tvShowObserver: Observer<TvShow>
+    private lateinit var tvShowObserver: Observer<Resource<TvShow>>
 
     @Before
     fun setup() {
@@ -63,13 +64,13 @@ class DetailViewModelTest {
     @Test
     fun getMovieSelected() {
 
-        val movie = MutableLiveData<Movie>()
-        movie.value = dummyMovie
+        val movie = MutableLiveData<Resource<Movie>>()
+        movie.value = Resource.success(dummyMovie)
 
         `when`(filmRepository.getSelectedMovie(dummyMovieImbdID)).thenReturn(movie)
 
         viewModel.setSelectedMovie(dummyMovieImbdID)
-        val movieEntity = viewModel.getMovieSelected().value
+        val movieEntity = viewModel.getMovieSelected().value?.data
         verify(filmRepository).getSelectedMovie(dummyMovieImbdID)
 
         assertNotNull(movieEntity)
@@ -80,19 +81,19 @@ class DetailViewModelTest {
         assertEquals(movieEntity?.Type, dummyMovie.Type)
 
         viewModel.getMovieSelected().observeForever(movieObserver)
-        verify(movieObserver).onChanged(dummyMovie)
+        verify(movieObserver).onChanged(movie.value)
     }
 
     @Test
     fun getTVShowSelected() {
 
-        val tvShow = MutableLiveData<TvShow>()
-        tvShow.value = dummyTVShow
+        val tvShow = MutableLiveData<Resource<TvShow>>()
+        tvShow.value = Resource.success(dummyTVShow)
 
         `when`(filmRepository.getSelectedTVShow(dummyTVShowImbdID)).thenReturn(tvShow)
 
         viewModel.setSelectedTVShow(dummyTVShowImbdID)
-        val tvShowEntity = viewModel.getTVShowSelected().value
+        val tvShowEntity = viewModel.getTVShowSelected().value?.data
         verify(filmRepository).getSelectedTVShow(dummyTVShowImbdID)
 
         assertNotNull(tvShowEntity)
@@ -103,6 +104,6 @@ class DetailViewModelTest {
         assertEquals(tvShowEntity?.Type, dummyTVShow.Type)
 
         viewModel.getTVShowSelected().observeForever(tvShowObserver)
-        verify(tvShowObserver).onChanged(dummyTVShow)
+        verify(tvShowObserver).onChanged(tvShow.value)
     }
 }

@@ -3,11 +3,13 @@ package com.example.mymovie.movie
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.example.mymovie.data.FilmRepository
-import com.example.mymovie.data.entity.Movie
-import com.example.mymovie.data.entity.TvShow
+import com.example.mymovie.data.local.entity.Movie
+import com.example.mymovie.data.local.entity.TvShow
 import com.example.mymovie.ui.movie.MovieViewModel
 import com.example.mymovie.utils.FakeData
+import com.example.mymovie.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
 
@@ -30,7 +32,10 @@ class MovieViewModelTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var observer: Observer<List<Movie>>
+    private lateinit var observer: Observer<Resource<PagedList<Movie>>>
+
+    @Mock
+    private lateinit var pagedList: PagedList<Movie>
 
     @Before
     fun setUp() {
@@ -39,15 +44,17 @@ class MovieViewModelTest {
 
     @Test
     fun getMovie() {
+        val fakeMovie = Resource.success(pagedList)
+        `when`(fakeMovie.data?.size).thenReturn(5)
+        val movies = MutableLiveData<Resource<PagedList<Movie>>>()
+        movies.value = fakeMovie
 
-        val fakeMovie = FakeData.generateFakeMovies()
-        val movie = MutableLiveData<List<Movie>>()
-        movie.value = fakeMovie
+        `when`(filmRepository.getAllMovie()).thenReturn(movies)
+        val movieEntities = viewModel.getMovie().value?.data
+        verify(filmRepository).getAllMovie()
 
-        `when`(filmRepository.getAllMovie()).thenReturn(movie)
-        val movies = viewModel.getMovie().value
-        assertNotNull(movies)
-        assertEquals(10, movies?.size)
+        assertNotNull(movieEntities)
+        assertEquals(5, movieEntities?.size)
 
         viewModel.getMovie().observeForever(observer)
         verify(observer).onChanged(fakeMovie)

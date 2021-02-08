@@ -13,17 +13,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymovie.R
 import com.example.mymovie.databinding.FragmentMovieBinding
 import com.example.mymovie.ui.detail.DetailActivity
-import com.example.mymovie.data.entity.Movie
+import com.example.mymovie.data.local.entity.Movie
 import com.example.mymovie.ui.detail.DetailCollapseActivity
 import com.example.mymovie.viewmodel.ViewModelFactory
+import com.example.mymovie.vo.Resource
+import com.example.mymovie.vo.Status
 
 
 class MovieFragment : Fragment(), MovieItemListener {
 
     private lateinit var binding: FragmentMovieBinding
-    private lateinit var viewModel : MovieViewModel
-    private var listMovie : ArrayList<Movie> = ArrayList()
-    private lateinit var movieAdapter : MovieAdapter
+    private lateinit var viewModel: MovieViewModel
+    private var listMovie: ArrayList<Movie> = ArrayList()
+    private lateinit var movieAdapter: MovieAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,20 +39,35 @@ class MovieFragment : Fragment(), MovieItemListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if ( activity != null) {
+        if (activity != null) {
             val viewModelFactory = ViewModelFactory.getInstance(requireActivity())
 
             binding.progressBar.visibility = View.VISIBLE
 
             viewModel = ViewModelProvider(this, viewModelFactory)[MovieViewModel::class.java]
 
-            movieAdapter = MovieAdapter(listMovie, this)
+            movieAdapter = MovieAdapter(this)
 
-            viewModel.getMovie().observe(viewLifecycleOwner, Observer {
-                binding.progressBar.visibility = View.GONE
-                binding.recyclerViewMovie.visibility = View.VISIBLE
-                listMovie.addAll(it)
-                movieAdapter.notifyDataSetChanged()
+            viewModel.getMovie().observe(viewLifecycleOwner, Observer { movies ->
+
+                when (movies.status) {
+                    Status.SUCCESS -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.recyclerViewMovie.visibility = View.VISIBLE
+                        movies.data?.let {
+                            movieAdapter.submitList(it)
+                        }
+
+                    }
+                    Status.LOADING -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+                    Status.ERROR -> {
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(requireActivity(), "Error Occurred", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
             })
 
 //            listMovie = viewModel.getMovie() as ArrayList<Movie>
@@ -64,9 +81,8 @@ class MovieFragment : Fragment(), MovieItemListener {
     }
 
     override fun onMovieItemClicked(Position: Int) {
-       // val intent = Intent(context, DetailActivity::class.java)
         val intent = Intent(context, DetailCollapseActivity::class.java)
-        val movie = listMovie[Position]
+        val movie = movieAdapter.currentList?.get(Position)
         intent.putExtra(DetailActivity.RECEIVE_INTENT_MOVIE, movie)
         startActivity(intent)
     }

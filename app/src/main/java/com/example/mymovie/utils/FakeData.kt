@@ -1,8 +1,8 @@
 package com.example.mymovie.utils
 
 import com.example.mymovie.R
-import com.example.mymovie.data.entity.Movie
-import com.example.mymovie.data.entity.TvShow
+import com.example.mymovie.data.local.entity.Movie
+import com.example.mymovie.data.local.entity.TvShow
 import com.example.mymovie.data.remote.response.MovieResponse
 import com.example.mymovie.data.remote.response.TVShowResponse
 
@@ -29,8 +29,8 @@ object FakeData {
     fun generateFakeTVShows() : List<TvShow> {
         val listTvShow = ArrayList<TvShow>()
 
-        listTvShow.add(TvShow("TV01", "Big Hero 6","Family, Fun", "https://m.media-amazon.com/images/M/MV5BMDliOTIzNmUtOTllOC00NDU3LWFiNjYtMGM0NDc1YTMxNjYxXkEyXkFqcGdeQXVyNTM3NzExMDQ@._V1_SX300.jpg", "1 April 2021"))
-        listTvShow.add(TvShow("TV02", "Ted is Talking 2","Action", "https://m.media-amazon.com/images/M/MV5BMjI3ODU0OTQ1MV5BMl5BanBnXkFtZTgwNzI0MTQ2MzE@._V1_SX300.jpg", "2 April 2021"))
+        listTvShow.add(TvShow("TV01", "Kung Fu Panda","Family, Fun", "https://m.media-amazon.com/images/M/MV5BMDliOTIzNmUtOTllOC00NDU3LWFiNjYtMGM0NDc1YTMxNjYxXkEyXkFqcGdeQXVyNTM3NzExMDQ@._V1_SX300.jpg", "1 April 2021"))
+        listTvShow.add(TvShow("TV02", "Kung Fu Panda 2","Action", "https://m.media-amazon.com/images/M/MV5BMjI3ODU0OTQ1MV5BMl5BanBnXkFtZTgwNzI0MTQ2MzE@._V1_SX300.jpg", "2 April 2021"))
         listTvShow.add(TvShow("TV03", "Heroes","Serial, TVShow", "https://m.media-amazon.com/images/M/MV5BMWQ2MjQ0OTctMWE1OC00NjZjLTk3ZDAtNTk3NTZiYWMxYTlmXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "3 April 2021"))
         listTvShow.add(TvShow("TV04", "Hero","Horror", "https://m.media-amazon.com/images/M/MV5BNjdhOGY1OTktYWJkZC00OGY5LWJhY2QtZmQzZDA2MzY5MmNmXkEyXkFqcGdeQXVyNDk3NzU2MTQ@._V1_SX300.jpg", "4 April 2021"))
         listTvShow.add(TvShow("TV05", "Kelly's Heroe","Crime, Thriller", "https://m.media-amazon.com/images/M/MV5BMzAyNDUwYzUtN2NlMC00ODliLWExMjgtMGMzNmYzZmUwYTg1XkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_SX300.jpg", "5 April 2021"))
@@ -46,18 +46,32 @@ object FakeData {
     fun generatesRemoteDummyMovie() : List<MovieResponse> {
         val movies = ArrayList<MovieResponse>()
 
-        movies.add(MovieResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Duar", "Movie", "2019", "TT12345"))
-        movies.add(MovieResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Duar 2", "Movie", "2017", "TT55555"))
-
+        movies.add(MovieResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Big Hero 6", "Movie", "2019", "TT12345"))
+        movies.add(MovieResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Heroes", "Movie", "2017", "TT55555"))
+        movies.add(MovieResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Big Hero 6", "Movie", "2019", "TT12345"))
+        movies.add(MovieResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Heroes", "Movie", "2017", "TT55555"))
+        movies.add(MovieResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Big Hero 6", "Movie", "2019", "TT12345"))
+        movies.add(MovieResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Heroes", "Movie", "2017", "TT55555"))
+        movies.add(MovieResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Big Hero 6", "Movie", "2019", "TT12345"))
+        movies.add(MovieResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Heroes", "Movie", "2017", "TT55555"))
+        movies.add(MovieResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Big Hero 6", "Movie", "2019", "TT12345"))
+        movies.add(MovieResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Heroes", "Movie", "2017", "TT55555"))
         return movies
     }
 
     fun generateRemoteDummyTVShow() : List<TVShowResponse> {
         val tvShow = ArrayList<TVShowResponse>()
 
-        tvShow.add(TVShowResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Duar", "TV Show", "2019", "TT12345"))
-        tvShow.add(TVShowResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Duar 2", "TV Show", "2017", "TT55555"))
-
+        tvShow.add(TVShowResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Kung Fu Panda", "TV Show", "2019", "TT12345"))
+        tvShow.add(TVShowResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Kung Fu Panda 2", "TV Show", "2017", "TT55555"))
+        tvShow.add(TVShowResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Kung Fu Panda", "TV Show", "2019", "TT12345"))
+        tvShow.add(TVShowResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Kung Fu Panda 2", "TV Show", "2017", "TT55555"))
+        tvShow.add(TVShowResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Kung Fu Panda", "TV Show", "2019", "TT12345"))
+        tvShow.add(TVShowResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Kung Fu Panda 2", "TV Show", "2017", "TT55555"))
+        tvShow.add(TVShowResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Kung Fu Panda", "TV Show", "2019", "TT12345"))
+        tvShow.add(TVShowResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Kung Fu Panda 2", "TV Show", "2017", "TT55555"))
+        tvShow.add(TVShowResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Kung Fu Panda", "TV Show", "2019", "TT12345"))
+        tvShow.add(TVShowResponse("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Kung Fu Panda 2", "TV Show", "2017", "TT55555"))
         return tvShow
     }
 

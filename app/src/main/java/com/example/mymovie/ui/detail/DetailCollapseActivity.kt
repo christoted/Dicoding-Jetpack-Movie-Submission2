@@ -1,20 +1,26 @@
 package com.example.mymovie.ui.detail
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.mymovie.R
-import com.example.mymovie.data.entity.Movie
-import com.example.mymovie.data.entity.TvShow
+import com.example.mymovie.data.local.entity.Movie
+import com.example.mymovie.data.local.entity.TvShow
 import com.example.mymovie.databinding.ActivityDetailCollapseBinding
 import com.example.mymovie.databinding.ContentScrollingBinding
 import com.example.mymovie.viewmodel.ViewModelFactory
+import com.example.mymovie.vo.Resource
+import com.example.mymovie.vo.Status
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -41,19 +47,10 @@ class DetailCollapseActivity : AppCompatActivity() {
 
 
         setSupportActionBar(findViewById(R.id.toolbar))
-        findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout).title = title
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
 
         val viewModelFactory = ViewModelFactory.getInstance(this)
 
         viewModel = ViewModelProvider(this, viewModelFactory)[DetailViewModel::class.java]
-
-        activityDetailCollapseBinding.appBar.visibility = View.GONE
-        activityDetailCollapseBinding.content.scrollingContent.visibility = View.GONE
-        activityDetailCollapseBinding.progressBar.visibility = View.VISIBLE
 
 
         val extras = intent.extras
@@ -69,46 +66,105 @@ class DetailCollapseActivity : AppCompatActivity() {
             if (movie != null) {
                 viewModel.setSelectedMovie(movieImbdID ?: "tt2245084")
                 viewModel.getMovieSelected().observe(this, Observer {
-                    activityDetailCollapseBinding.progressBar.visibility = View.GONE
-                    activityDetailCollapseBinding.appBar.visibility = View.VISIBLE
-                    activityDetailCollapseBinding.content.scrollingContent.visibility = View.VISIBLE
-                    val selectedMovie = it
+                    when (it.status) {
+                        Status.SUCCESS -> {
+                            activityDetailCollapseBinding.progressBar.visibility = View.GONE
+                            activityDetailCollapseBinding.appBar.visibility = View.VISIBLE
+                            activityDetailCollapseBinding.content.scrollingContent.visibility =
+                                View.VISIBLE
 
-                    Glide.with(this)
-                        .load(selectedMovie.Poster)
-                        .into(activityDetailCollapseBinding.imageView)
+                            val selectedMovie = it.data
+                            Glide.with(this)
+                                .load(selectedMovie?.Poster)
+                                .into(activityDetailCollapseBinding.imageView)
 
-                    activityDetailCollapseBinding.appBar.background
+                            contentScrollingBinding.movieTitleDetail.text = selectedMovie?.Title
+                            contentScrollingBinding.movieReleaseDateDetail.text =
+                                selectedMovie?.Year
+                            contentScrollingBinding.movieAuthorDetail.text = selectedMovie?.imdbID
 
-                    contentScrollingBinding.movieTitleDetail.text = selectedMovie.Title
-                    contentScrollingBinding.movieReleaseDateDetail.text = selectedMovie.Year
-                    contentScrollingBinding.movieAuthorDetail.text = selectedMovie.imdbID
+                            if (selectedMovie != null) {
+                                setBookmarkState(selectedMovie.bookmarked)
+                            }
+                        }
+
+                        Status.LOADING -> {
+                            activityDetailCollapseBinding.appBar.visibility = View.GONE
+                            activityDetailCollapseBinding.content.scrollingContent.visibility =
+                                View.GONE
+                            activityDetailCollapseBinding.progressBar.visibility = View.VISIBLE
+                        }
+
+                        Status.ERROR -> {
+                            activityDetailCollapseBinding.progressBar.visibility = View.GONE
+                            activityDetailCollapseBinding.appBar.visibility = View.VISIBLE
+                            activityDetailCollapseBinding.content.scrollingContent.visibility =
+                                View.VISIBLE
+
+                            Toast.makeText(this, "Error Occurred", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
                 })
-            } else if (tvShow != null) {
 
-                activityDetailCollapseBinding.progressBar.visibility = View.GONE
-                activityDetailCollapseBinding.appBar.visibility = View.VISIBLE
-                activityDetailCollapseBinding.content.scrollingContent.visibility = View.VISIBLE
+                activityDetailCollapseBinding.fab.setOnClickListener {
+                        viewModel.setBookMarkedMovie(movie)
+                }
+
+
+
+            } else if (tvShow != null) {
 
                 viewModel.setSelectedTVShow(tvShowImbdID ?: "tt0441773")
 
                 viewModel.getTVShowSelected().observe(this, Observer {
-                    activityDetailCollapseBinding.progressBar.visibility = View.GONE
-                    activityDetailCollapseBinding.layoutDetailCollapse.visibility = View.VISIBLE
 
-                    val selectedTVShow = it
+                    when (it.status) {
+                        Status.SUCCESS -> {
+                            activityDetailCollapseBinding.progressBar.visibility = View.GONE
+                            activityDetailCollapseBinding.appBar.visibility = View.VISIBLE
+                            activityDetailCollapseBinding.content.scrollingContent.visibility =
+                                View.VISIBLE
 
-                    Glide.with(this)
-                        .load(selectedTVShow.Poster)
-                        .into(activityDetailCollapseBinding.imageView)
+                            val selectedTVShow = it.data
+                            Glide.with(this)
+                                .load(selectedTVShow?.Poster)
+                                .into(activityDetailCollapseBinding.imageView)
 
-                    contentScrollingBinding.movieTitleDetail.text = selectedTVShow.Title
-                    contentScrollingBinding.movieReleaseDateDetail.text = selectedTVShow.Year
-                    contentScrollingBinding.movieAuthorDetail.text = selectedTVShow.imdbID
+                            contentScrollingBinding.movieTitleDetail.text = selectedTVShow?.Title
+                            contentScrollingBinding.movieReleaseDateDetail.text = selectedTVShow?.Year
+                            contentScrollingBinding.movieAuthorDetail.text = selectedTVShow?.imdbID
+
+                            if (selectedTVShow != null) {
+                                setBookmarkState(selectedTVShow.bookmarked)
+                            }
+                        }
+
+                        Status.ERROR -> {
+                            activityDetailCollapseBinding.progressBar.visibility = View.GONE
+                            activityDetailCollapseBinding.appBar.visibility = View.VISIBLE
+                            activityDetailCollapseBinding.content.scrollingContent.visibility =
+                                View.VISIBLE
+
+                            Toast.makeText(this, "Error Occurred", Toast.LENGTH_SHORT).show()
+                        }
+
+                        Status.LOADING -> {
+                            activityDetailCollapseBinding.appBar.visibility = View.GONE
+                            activityDetailCollapseBinding.content.scrollingContent.visibility =
+                                View.GONE
+                            activityDetailCollapseBinding.progressBar.visibility = View.VISIBLE
+                        }
+                    }
+
                 })
-            }
 
+                activityDetailCollapseBinding.fab.setOnClickListener {
+                    viewModel.setBookMarkedTVShow(tvShow)
+                }
+            }
         }
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             val w: Window = window
@@ -120,5 +176,13 @@ class DetailCollapseActivity : AppCompatActivity() {
     }
 
 
+    private fun setBookmarkState(state: Boolean) {
+        if (state) {
+            activityDetailCollapseBinding.fab.setImageResource(R.drawable.ic_baseline_favorite_24)
+        } else {
+            activityDetailCollapseBinding.fab.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+        }
+    }
 
 }
+

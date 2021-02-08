@@ -15,17 +15,18 @@ import com.example.mymovie.R
 import com.example.mymovie.databinding.FragmentTvShowBinding
 import com.example.mymovie.databinding.ItemTvShowBinding
 import com.example.mymovie.ui.detail.DetailActivity
-import com.example.mymovie.data.entity.Movie
-import com.example.mymovie.data.entity.TvShow
+import com.example.mymovie.data.local.entity.Movie
+import com.example.mymovie.data.local.entity.TvShow
 import com.example.mymovie.ui.detail.DetailCollapseActivity
 import com.example.mymovie.viewmodel.ViewModelFactory
+import com.example.mymovie.vo.Status
 
 class TvShowFragment : Fragment(), TVShowListener {
 
     private lateinit var binding: FragmentTvShowBinding
-    private lateinit var viewModel : TvShowViewModel
+    private lateinit var viewModel: TvShowViewModel
     private lateinit var tvShowAdapter: TVShowAdapter
-    private var listTVShow : ArrayList<TvShow> = ArrayList()
+    private var listTVShow: ArrayList<TvShow> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,21 +40,40 @@ class TvShowFragment : Fragment(), TVShowListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if ( activity != null) {
+        if (activity != null) {
 
             binding.progressBar.visibility = View.VISIBLE
 
             val viewModelFactory = ViewModelFactory.getInstance(requireActivity())
             viewModel = ViewModelProvider(this, viewModelFactory)[TvShowViewModel::class.java]
-            tvShowAdapter = TVShowAdapter(listTVShow, this)
-            viewModel.getTVShow().observe(viewLifecycleOwner, Observer {
-                binding.progressBar.visibility = View.GONE
-                binding.recyclerViewTVShow.visibility = View.VISIBLE
-                listTVShow.addAll(it)
-                tvShowAdapter.notifyDataSetChanged()
+            tvShowAdapter = TVShowAdapter(this)
+            viewModel.getTVShow().observe(viewLifecycleOwner, Observer { tvShows ->
+
+                when (tvShows.status) {
+                    Status.SUCCESS -> {
+
+                        binding.progressBar.visibility = View.GONE
+                        binding.recyclerViewTVShow.visibility = View.VISIBLE
+                        tvShows.data?.let {
+                            tvShowAdapter.submitList(it)
+                        }
+                    }
+
+                    Status.LOADING -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+
+                    Status.ERROR -> {
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(requireActivity(), "Error Occurred", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+
+
             })
 
-         //   listTVShow = viewModel.getTVShow() as ArrayList<TvShow>
+            //   listTVShow = viewModel.getTVShow() as ArrayList<TvShow>
 
             with(binding.recyclerViewTVShow) {
                 layoutManager = LinearLayoutManager(context)
@@ -67,8 +87,7 @@ class TvShowFragment : Fragment(), TVShowListener {
     }
 
     override fun onTVShowClickedListener(Position: Int) {
-        val tvShow = listTVShow[Position]
-     //   val intent = Intent(context, DetailActivity::class.java)
+        val tvShow = tvShowAdapter.currentList?.get(Position)
         val intent = Intent(context, DetailCollapseActivity::class.java)
         intent.putExtra(DetailActivity.RECEIVE_INTENT_TVSHOWS, tvShow)
         startActivity(intent)
