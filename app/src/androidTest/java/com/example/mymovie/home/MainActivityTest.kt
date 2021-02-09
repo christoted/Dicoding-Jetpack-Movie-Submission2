@@ -36,8 +36,6 @@ class MainActivityTest {
     fun setup(){
         ActivityScenario.launch(MainActivity::class.java)
         IdlingRegistry.getInstance().register(EspressoIdlingResource.espressoTestIdlingResource)
-
-        
     }
 
     @After
@@ -82,7 +80,11 @@ class MainActivityTest {
     @Test
     fun loadFavourite(){
         onView(withId(R.id.favourite)).perform(ViewActions.click())
+        onView(withId(R.id.recyclerViewFav))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.recyclerViewFav)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyTVShow.size))
 
+        onView(withId(R.id.recyclerViewFav)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, ViewActions.click()))
     }
 
 }
