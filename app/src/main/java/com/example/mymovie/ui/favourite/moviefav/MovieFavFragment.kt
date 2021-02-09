@@ -1,5 +1,6 @@
 package com.example.mymovie.ui.favourite.moviefav
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import com.example.mymovie.R
 import com.example.mymovie.data.local.entity.Movie
 import com.example.mymovie.databinding.FragmentFavouriteBinding
 import com.example.mymovie.databinding.FragmentMovieFavBinding
+import com.example.mymovie.ui.detail.DetailCollapseActivity
 import com.example.mymovie.ui.movie.MovieAdapter
 import com.example.mymovie.ui.movie.MovieFragment
 import com.example.mymovie.ui.movie.MovieItemListener
@@ -26,6 +28,8 @@ class MovieFavFragment : Fragment(), MovieItemListener {
     private lateinit var listSavedMovie: ArrayList<Movie>
 
     private lateinit var binding: FragmentMovieFavBinding
+
+    private lateinit var movieAdapter: MovieAdapter
 
     companion object {
         val TAG = MovieFavFragment::class.java.simpleName
@@ -45,7 +49,7 @@ class MovieFavFragment : Fragment(), MovieItemListener {
 
         listSavedMovie = ArrayList()
 
-        val movieAdapter = MovieAdapter(this@MovieFavFragment)
+        movieAdapter = MovieAdapter(this@MovieFavFragment)
 
         if ( activity != null) {
             val viewModelFactory = ViewModelFactory.getInstance(requireActivity())
@@ -65,8 +69,18 @@ class MovieFavFragment : Fragment(), MovieItemListener {
         }
     }
 
-    override fun onMovieItemClicked(Position: Int) {
+    override fun onResume() {
+        super.onResume()
+        viewModel.getMovieSaved().observe(viewLifecycleOwner, Observer {
+            movieAdapter.submitList(it)
+        })
+    }
 
+    override fun onMovieItemClicked(Position: Int) {
+        val intent = Intent(context, DetailCollapseActivity::class.java)
+        val movie = movieAdapter.currentList?.get(Position)
+        intent.putExtra(DetailCollapseActivity.RECEIVE_INTENT_MOVIE, movie)
+        startActivity(intent)
     }
 
 }

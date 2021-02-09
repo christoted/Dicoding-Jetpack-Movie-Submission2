@@ -1,5 +1,6 @@
 package com.example.mymovie.ui.favourite.tvshowfav
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymovie.R
 import com.example.mymovie.data.local.entity.TvShow
 import com.example.mymovie.databinding.FragmentTVShowFavBinding
+import com.example.mymovie.ui.detail.DetailCollapseActivity
 import com.example.mymovie.ui.tvshow.TVShowAdapter
 import com.example.mymovie.ui.tvshow.TVShowListener
 import com.example.mymovie.viewmodel.ViewModelFactory
@@ -57,8 +59,18 @@ class TVShowFavFragment : Fragment(), TVShowListener {
         }
     }
 
-    override fun onTVShowClickedListener(Position: Int) {
+    override fun onResume() {
+        super.onResume()
+        viewModel.getSavedTVShow().observe(viewLifecycleOwner, Observer {
+            tvShowAdapter.submitList(it)
+        })
+    }
 
+    override fun onTVShowClickedListener(Position: Int) {
+        val intent = Intent(context, DetailCollapseActivity::class.java)
+        val tvShow = tvShowAdapter.currentList?.get(Position)
+        intent.putExtra(DetailCollapseActivity.RECEIVE_INTENT_TVSHOWS, tvShow)
+        startActivity(intent)
     }
 
 }

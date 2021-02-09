@@ -175,6 +175,12 @@ class DetailCollapseActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+
+    }
+
 
     private fun setBookmarkState(state: Boolean) {
         if (state) {
