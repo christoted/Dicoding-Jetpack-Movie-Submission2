@@ -55,24 +55,24 @@ class MainActivityTest {
 
     @Test
     fun loadDetailMovie() {
-        onView(withId(R.id.recyclerViewMovie)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0,
+        onView(withId(R.id.recyclerViewMovie)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(9,
             ViewActions.click()
         ))
 
         onView(withId(R.id.movieTitleDetail))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         onView(withId(R.id.movieTitleDetail))
-            .check(ViewAssertions.matches(withText(dummyMovies[0].Title)))
+            .check(ViewAssertions.matches(withText(dummyMovies[9].Title)))
 
         onView(withId(R.id.movieReleaseDateDetail))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         onView(withId(R.id.movieReleaseDateDetail))
-            .check(ViewAssertions.matches(withText(dummyMovies[0].Year)))
+            .check(ViewAssertions.matches(withText(dummyMovies[9].Year)))
 
         onView(withId(R.id.movieAuthorDetail))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         onView(withId(R.id.movieAuthorDetail))
-            .check(ViewAssertions.matches(withText(dummyMovies[0].imdbID)))
+            .check(ViewAssertions.matches(withText(dummyMovies[9].imdbID)))
 
         onView(withId(R.id.fab)).perform(ViewActions.click())
     }
@@ -96,9 +96,9 @@ class MainActivityTest {
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
 
-           onView(withId(R.id.recyclerViewFav)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyTVShow.size))
+        onView(withId(R.id.recyclerViewFav)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyTVShow.size))
 
-          onView(withId(R.id.recyclerViewFav)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, ViewActions.click()))
+        onView(withId(R.id.recyclerViewFav)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, ViewActions.click()))
     }
 
 
