@@ -43,10 +43,11 @@ class MainActivityTest {
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.espressoTestIdlingResource)
     }
 
+
     @Test
     fun loadMovie() {
 
-       onView(withId(R.id.recyclerViewMovie))
+        onView(withId(R.id.recyclerViewMovie))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         onView(withId(R.id.recyclerViewMovie))
             .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyMovies.size))
@@ -62,11 +63,44 @@ class MainActivityTest {
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         onView(withId(R.id.movieTitleDetail))
             .check(ViewAssertions.matches(withText(dummyMovies[0].Title)))
+
         onView(withId(R.id.movieReleaseDateDetail))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         onView(withId(R.id.movieReleaseDateDetail))
             .check(ViewAssertions.matches(withText(dummyMovies[0].Year)))
+
+        onView(withId(R.id.movieAuthorDetail))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.movieAuthorDetail))
+            .check(ViewAssertions.matches(withText(dummyMovies[0].imdbID)))
+
+        onView(withId(R.id.fab)).perform(ViewActions.click())
     }
+
+    @Test
+    fun loadFavouriteFirst(){
+        onView(withId(R.id.favourite)).perform(ViewActions.click())
+        onView(withId(R.id.recyclerViewFav))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+
+     //   onView(withId(R.id.recyclerViewFav)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyTVShow.size))
+
+     //   onView(withId(R.id.recyclerViewFav)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, ViewActions.click()))
+    }
+
+    @Test
+    fun loadFavouriteSecond(){
+        onView(withId(R.id.favourite)).perform(ViewActions.click())
+        onView(withId(R.id.recyclerViewFav))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+
+           onView(withId(R.id.recyclerViewFav)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyTVShow.size))
+
+          onView(withId(R.id.recyclerViewFav)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, ViewActions.click()))
+    }
+
 
     @Test
     fun loadTVShows() {
@@ -77,14 +111,5 @@ class MainActivityTest {
         onView(withId(R.id.recyclerViewTVShow)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyTVShow.size))
     }
 
-    @Test
-    fun loadFavourite(){
-        onView(withId(R.id.favourite)).perform(ViewActions.click())
-        onView(withId(R.id.recyclerViewFav))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        onView(withId(R.id.recyclerViewFav)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyTVShow.size))
-
-        onView(withId(R.id.recyclerViewFav)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, ViewActions.click()))
-    }
 
 }

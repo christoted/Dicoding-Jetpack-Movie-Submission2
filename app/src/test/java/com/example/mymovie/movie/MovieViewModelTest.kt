@@ -60,10 +60,4 @@ class MovieViewModelTest {
         verify(observer).onChanged(fakeMovie)
     }
 
-    /*
-      Scenario pengujian ( menggunakan InstantTaskExecutorRule untuk proses async )
-      1. Memastikan bahwa method di dalam filmRepository dapat mengenerate data
-      2. Mengecek bahwa hasil dari viewModel.getTVShow().value tidak sama dengan null
-      3. Mengecek jumlah data viewModel.getTVShow().value sama dengan 10
-  */
 }
