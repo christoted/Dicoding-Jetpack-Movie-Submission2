@@ -76,6 +76,8 @@ class FilmRepositoryTest {
         assertNotNull(movieEntities)
         assertNotNull(movieEntities.data?.Title)
         assertEquals(movieEntities.data?.Title, movieResponse[0].Title)
+        assertEquals(movieEntities.data?.imdbID, movieResponse[0].imdbID)
+        assertEquals(movieEntities.data?.Year, movieResponse[0].Year)
     }
 
     @Test
@@ -89,6 +91,8 @@ class FilmRepositoryTest {
         assertNotNull(tvShowEntities)
         assertNotNull(tvShowEntities.data?.Title)
         assertEquals(tvShowEntities.data?.Title, tvShowResponse[0].Title)
+        assertEquals(tvShowEntities.data?.imdbID, tvShowResponse[0].imdbID)
+        assertEquals(tvShowEntities.data?.Year, tvShowResponse[0].Year)
     }
 
     @Test

@@ -4,9 +4,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -44,9 +42,10 @@ class DetailCollapseActivity : AppCompatActivity() {
         activityDetailCollapseBinding = ActivityDetailCollapseBinding.inflate(layoutInflater)
         contentScrollingBinding = activityDetailCollapseBinding.content
         setContentView(activityDetailCollapseBinding.root)
-
-
+        
         setSupportActionBar(findViewById(R.id.toolbar))
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val viewModelFactory = ViewModelFactory.getInstance(this)
 
@@ -175,10 +174,22 @@ class DetailCollapseActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.menu_detail_collapse, menu)
+        return true
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        
+        when(item.itemId) {
+            R.id.action_settings -> {
+                Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show()
+            }
+        }
+        
+        return super.onOptionsItemSelected(item)
     }
 
 

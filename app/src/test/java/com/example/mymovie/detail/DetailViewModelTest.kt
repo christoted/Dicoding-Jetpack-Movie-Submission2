@@ -32,6 +32,7 @@ class DetailViewModelTest {
     private val dummyMovieImbdID = dummyMovie.imdbID
     private val dummyTVShowImbdID = dummyTVShow.imdbID
 
+
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
@@ -49,17 +50,10 @@ class DetailViewModelTest {
         viewModel = DetailViewModel(filmRepository)
         viewModel.setSelectedMovie(dummyMovieImbdID)
         viewModel.setSelectedTVShow(dummyTVShowImbdID)
-    }
 
-    /*
-        Scenario pengujian
-        fun getMovieSelected()
-        1. melakukan set value pada variable movie
-        2. Melakukan pengecekan pada repository, apakah bisa repository dapat mengeretate data
-        3. Melakukan verify apakah method getSelectedMovie dapat mengenerate data
-        4. Mengecek bahwa hasil dari viewModel.getMovieSelected().value tidak sama dengan null
-        5. Melakukan pengecekan bahwa data video model apakah as expected atau tidak
-    */
+        viewModel.setBookMarkedMovie(dummyMovie)
+        viewModel.setBookMarkedTVShow(dummyTVShow)
+    }
 
     @Test
     fun getMovieSelected() {
