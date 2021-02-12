@@ -19,7 +19,7 @@ object FakeData {
         listMovies.add(Movie("M07", "The Toxic Avenger", "Horror", "https://m.media-amazon.com/images/M/MV5BNzViNmQ5MTYtMmI4Yy00N2Y2LTg4NWUtYWU3MThkMTVjNjk3XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "26 Maret 2021"))
         listMovies.add(Movie("M08", "The Avengers: Earth's Mightiest Heroes", "Crime, politic", "https://m.media-amazon.com/images/M/MV5BYzA4ZjVhYzctZmI0NC00ZmIxLWFmYTgtOGIxMDYxODhmMGQ2XkEyXkFqcGdeQXVyNjExODE1MDc@._V1_SX300.jpg", "27 Maret 2021"))
         listMovies.add(Movie("M09", "Ultimate Avengers: The Movie", "Fight, Action", "https://m.media-amazon.com/images/M/MV5BMTYyMjk0NTMwMl5BMl5BanBnXkFtZTgwNzY0NjAwNzE@._V1_SX300.jpg", "28 Maret 2021"))
-        listMovies.add(Movie("M10", "Ultimate Avengers II", "Action, Fight", "https://m.media-amazon.com/images/M/MV5BZjI3MTI5ZTYtZmNmNy00OGZmLTlhNWMtNjZiYmYzNDhlOGRkL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_SX300.jpg", "29 Maret 2021"))
+        listMovies.add(Movie("https://m.media-amazon.com/images/M/MV5BMTYyMDk0OWItZWQxYy00YzFkLWIwNDctYTYxODU5Zjk3MjAyXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg", "Hero", "Action, Fight", "1992", "tt0104412"))
 
 
 
