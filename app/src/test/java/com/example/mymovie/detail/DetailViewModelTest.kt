@@ -9,15 +9,17 @@ import com.example.mymovie.data.local.entity.TvShow
 import com.example.mymovie.ui.detail.DetailViewModel
 import com.example.mymovie.utils.FakeData
 import com.example.mymovie.vo.Resource
+import com.nhaarman.mockitokotlin2.isA
 import com.nhaarman.mockitokotlin2.verify
-import org.junit.Test
-
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentCaptor
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
+import org.mockito.invocation.InvocationOnMock
 import org.mockito.junit.MockitoJUnitRunner
 
 
@@ -54,6 +56,59 @@ class DetailViewModelTest {
         viewModel.setBookMarkedMovie(dummyMovie)
         viewModel.setBookMarkedTVShow(dummyTVShow)
     }
+
+    @Test
+     fun whenAddBookmarkedVerified() {
+        val detailViewModel = mock(DetailViewModel::class.java)
+        doNothing().`when`(detailViewModel).setBookMarkedMovie(dummyMovie)
+        detailViewModel.setBookMarkedMovie(dummyMovie)
+        verify(detailViewModel, times(1)).setBookMarkedMovie(dummyMovie)
+    }
+
+    @Test(expected = Exception::class)
+    fun givenNull_AddThrows() {
+        val detailViewModel = mock(DetailViewModel::class.java)
+        doThrow().`when`(detailViewModel).setBookMarkedMovie(dummyMovie)
+        detailViewModel.setBookMarkedMovie(dummyMovie)
+    }
+
+    @Test
+    fun whenAddCalledAnswered() {
+        val detailViewModel = mock(DetailViewModel::class.java)
+        doAnswer { invocation: InvocationOnMock ->
+            val arg0 = invocation.getArgument<Any>(0)
+            assertEquals(dummyMovie, arg0)
+            null
+        }.`when`(detailViewModel).setBookMarkedMovie(dummyMovie)
+        detailViewModel.setBookMarkedMovie(dummyMovie)
+    }
+
+    @Test
+    fun whenAddBookmarkedTVShowVerified() {
+        val detailViewModel = mock(DetailViewModel::class.java)
+        doNothing().`when`(detailViewModel).setBookMarkedTVShow(dummyTVShow)
+        detailViewModel.setBookMarkedTVShow(dummyTVShow)
+        verify(detailViewModel, times(1)).setBookMarkedTVShow(dummyTVShow)
+    }
+
+    @Test(expected = Exception::class)
+    fun givenNull_AddThrows_TVShow() {
+        val detailViewModel = mock(DetailViewModel::class.java)
+        doThrow().`when`(detailViewModel).setBookMarkedTVShow(dummyTVShow)
+        detailViewModel.setBookMarkedTVShow(dummyTVShow)
+    }
+
+    @Test
+    fun whenAddCalledAnsweredTVShow() {
+        val detailViewModel = mock(DetailViewModel::class.java)
+        doAnswer { invocation: InvocationOnMock ->
+            val arg0 = invocation.getArgument<Any>(0)
+            assertEquals(dummyTVShow, arg0)
+            null
+        }.`when`(detailViewModel).setBookMarkedTVShow(dummyTVShow)
+        detailViewModel.setBookMarkedTVShow(dummyTVShow)
+    }
+
 
     @Test
     fun getMovieSelected() {
